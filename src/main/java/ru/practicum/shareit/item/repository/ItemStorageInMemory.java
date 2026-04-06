@@ -37,8 +37,13 @@ public class ItemStorageInMemory implements ItemStorage {
 
     public boolean deleteByOwner(Long ownerUserId) {
         log.trace("Удаление всех предметов бронирования владельца id={}", ownerUserId);
-        items.entrySet().removeIf(item -> (item.getValue().getOwner() == ownerUserId));
-        Long cnt = items.values().stream().filter(item -> (item.getOwner() == ownerUserId)).count();
+        items.entrySet().removeIf(item ->
+                (item.getValue().getOwner() != null)
+                && (item.getValue().getOwner().equals(ownerUserId))
+        );
+        Long cnt = items.values().stream().filter(item ->
+                        (item.getOwner() != null) && (item.getOwner().equals(ownerUserId))
+                        ).count();
         return (cnt == 0);
     }
 
