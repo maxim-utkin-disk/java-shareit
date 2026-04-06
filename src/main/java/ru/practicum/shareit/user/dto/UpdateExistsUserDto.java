@@ -14,7 +14,12 @@ public class UpdateExistsUserDto {
     String email;
     String name;
 
-    public boolean hasEmail() { return !StringUtils.isBlank(this.email); }
-    public boolean hasName() {return !StringUtils.isBlank(this.name); }
+    public boolean hasEmail() {
+        return !StringUtils.isBlank(this.email);
+    }
+
+    public boolean hasName() {
+        return !StringUtils.isBlank(this.name);
+    }
 
 }

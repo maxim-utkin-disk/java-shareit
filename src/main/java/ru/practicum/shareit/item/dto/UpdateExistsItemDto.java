@@ -20,10 +20,13 @@ public class UpdateExistsItemDto {
     public boolean hasName() {
         return !StringUtils.isBlank(this.name);
     }
+
     public boolean hasDescription() {
         return !StringUtils.isBlank(this.description);
     }
+
     public boolean hasAvailable() {
         return this.available != null;
     }
+
 }
