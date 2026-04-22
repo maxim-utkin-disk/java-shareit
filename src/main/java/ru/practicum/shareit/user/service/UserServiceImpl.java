@@ -4,42 +4,53 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.exception.DuplicateEmailException;
+import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.exception.ValidationException;
 import ru.practicum.shareit.user.dto.CreateNewUserDto;
 import ru.practicum.shareit.user.dto.UpdateExistsUserDto;
 import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.mapper.UserMapper;
 import ru.practicum.shareit.user.model.User;
+import ru.practicum.shareit.user.repository.UserRepository;
 import ru.practicum.shareit.user.repository.UserStorage;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
 public class UserServiceImpl implements UserService {
-    private final UserStorage userStorage;
+    //private final UserStorage userStorage;
+    UserRepository repository;
 
-    @Autowired
+    /*@Autowired
     public UserServiceImpl(@Qualifier("UserStorageInMemory") UserStorage userStorage) {
       this.userStorage = userStorage;
+    }*/
+    public UserServiceImpl(UserRepository repository) {
+        this.repository = repository;
     }
 
     @Override
+    @Transactional
     public UserDto createNewUser(CreateNewUserDto newUser) {
         log.debug("Добавление нового пользователя");
 
-        if (userStorage.isEmailAlreadyUsed(newUser.getEmail())) {
+        Optional<User> findUser = repository.findByEmail(newUser.getEmail());
+        if (findUser.isPresent()) {
             throw new DuplicateEmailException(String.format("@-адрес \"%s\" уже присвоен другому пользователю", newUser.getEmail()));
         }
 
         User user = UserMapper.mapToUser(newUser);
-        user = userStorage.insert(user);
+        user = repository.save(user);
 
         return UserMapper.mapToUserDto(user);
     }
 
     @Override
+    @Transactional
     public UserDto updateExistsUser(Long userId, UpdateExistsUserDto newUser) {
         log.debug("Обновление пользователя");
 
@@ -47,32 +58,48 @@ public class UserServiceImpl implements UserService {
             throw new ValidationException("Не указан id пользователя");
         }
 
-        if (userStorage.isEmailAlreadyUsed(newUser.getEmail())) {
+        Optional<User> findUser = repository.findByEmail(newUser.getEmail());
+        if (findUser.isPresent()) {
             throw new DuplicateEmailException(String.format("@-адрес \"%s\" уже присвоен другому пользователю", newUser.getEmail()));
         }
 
-        User updatedUser = UserMapper.updateUserFields(userStorage.selectOne(userId), newUser);
-        updatedUser = userStorage.update(updatedUser);
+        User updatedUser = UserMapper.updateUserFields(findById(userId), newUser);
+        updatedUser = repository.save(updatedUser);
 
         return UserMapper.mapToUserDto(updatedUser);
     }
 
     @Override
+    @Transactional
     public boolean deleteUser(Long userId) {
-        User user = userStorage.selectOne(userId);
+        /*User user = userStorage.selectOne(userId);
         log.debug("Удаление пользователя {}", user.toString());
-        return userStorage.delete(userId);
+        return userStorage.delete(userId);*/
+        User delUser = findById(userId);
+        log.debug("Удаление пользователя {}", delUser.toString());
+        repository.delete(delUser);
+        return true;
+    }
+
+    private User findById(Long userId) {
+        return repository.findById(userId)
+                .orElseThrow(() -> new NotFoundException(String.format("Пользователь id = %d не найден", userId)));
     }
 
     @Override
     public UserDto getUserById(Long userId) {
-        return UserMapper.mapToUserDto(userStorage.selectOne(userId));
+        //return UserMapper.mapToUserDto(userStorage.selectOne(userId));
+        //User u = repository.findById(userId)
+        //        .orElseThrow(() -> new NotFoundException(String.format("Пользователь id = %d не найден", userId)));
+        return UserMapper.mapToUserDto(findById(userId));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<UserDto> getAllUsers() {
         log.debug("Получение полного списка пользователей");
-        return userStorage.selectAll().stream().map(UserMapper::mapToUserDto).toList();
+        //return userStorage.selectAll().stream().map(UserMapper::mapToUserDto).toList();
+        return repository.findAll().stream().map(UserMapper::mapToUserDto).toList();
     }
 
 }

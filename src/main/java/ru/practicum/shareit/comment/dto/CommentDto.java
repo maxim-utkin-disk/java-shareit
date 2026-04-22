@@ -1,4 +1,4 @@
-package ru.practicum.shareit.request.dto;
+package ru.practicum.shareit.comment.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AccessLevel;
@@ -9,12 +9,13 @@ import java.time.LocalDateTime;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ItemRequestDto {
+public class CommentDto {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     Long id;
-    String description;
+    String text;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    Long requestorId; // userId
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    Long itemId;
+    String authorName;
     LocalDateTime created;
 }
+

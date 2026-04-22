@@ -16,6 +16,8 @@ public class ItemDto {
     @NotBlank(message = "Описание предмета бронирования не должно быть пустым")
     String description;
     Boolean available = Boolean.FALSE;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     Long owner;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     Long request;
 }
