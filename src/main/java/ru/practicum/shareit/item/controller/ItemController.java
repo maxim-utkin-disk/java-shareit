@@ -40,7 +40,8 @@ public class ItemController {
 
     @GetMapping
     public List<ExtendedItemDto> findAll(@RequestHeader("X-Sharer-User-Id") Long ownerUserId) {
-        return itemService.findAll(ownerUserId);
+        //return itemService.findAll(ownerUserId);
+        return itemService.getAllItemsByOwner(ownerUserId);
     }
 
     @PatchMapping(idParamPath)

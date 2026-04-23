@@ -10,8 +10,7 @@ import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.mapper.BookingMapper;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.repository.BookingRepository;
-import ru.practicum.shareit.exception.NotFoundException;
-import ru.practicum.shareit.exception.ValidationException;
+import ru.practicum.shareit.exception.*;
 import ru.practicum.shareit.item.repository.ItemRepository;
 import ru.practicum.shareit.user.repository.UserRepository;
 
@@ -23,8 +22,6 @@ import ru.practicum.shareit.booking.dto.NewBookingDto;
 import ru.practicum.shareit.booking.dto.UpdateBookingDto;
 import ru.practicum.shareit.booking.model.BookingStatuses;
 import ru.practicum.shareit.booking.model.BookingStates;
-import ru.practicum.shareit.exception.NotItemOwnerException;
-import ru.practicum.shareit.exception.WrongBookingStatusException;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.model.User;
 
@@ -71,7 +68,7 @@ public class BookingServiceImpl implements BookingService {
             throw new ValidationException("Вещь не доступна для бронирования!");
         }
 
-        if (findUser.getId().equals(findItem.getUser().getId())) {
+        if (findUser.getId().equals(findItem.getOwnerUser().getId())) {
             throw new ValidationException("Нельзя бронировать собственную вещь");
         }
 
@@ -87,7 +84,7 @@ public class BookingServiceImpl implements BookingService {
         log.debug("Ищем бронирование с ID {}", bookingId);
 
         Booking booking = findById(bookingId);
-        User owner = findUserById(booking.getItem().getUser().getId());
+        User owner = findUserById(booking.getItem().getOwnerUser().getId());
         if (!booking.getBooker().getId().equals(userId) && !owner.getId().equals(userId)) {
             throw new ValidationException("Только владелец вещи и создатель брони могут просматривать данные о бронировании");
         }
@@ -208,15 +205,15 @@ public class BookingServiceImpl implements BookingService {
         Booking booking = findById(bookingId);
         Item item = findItemById(booking.getItem().getId());
 
-        if (!item.getUser().getId().equals(userId)) {
-            throw new NotItemOwnerException("Менять статус вещи может только её владелец");
+        if (!item.getOwnerUser().getId().equals(userId)) {
+            throw new OtherOwnerItemEditingException("Менять статус вещи может только её владелец");
         }
 
-        if (!booking.getStatus().equals(Statuses.WAITING)) {
+        if (!booking.getStatus().equals(BookingStatuses.WAITING)) {
             throw new WrongBookingStatusException("Вещь уже занята!");
         }
 
-        booking.setStatus(approved ? Statuses.APPROVED : Statuses.REJECTED);
+        booking.setStatus(approved ? BookingStatuses.APPROVED : BookingStatuses.REJECTED);
         return BookingMapper.mapToBookingDto(booking);
     }
 }

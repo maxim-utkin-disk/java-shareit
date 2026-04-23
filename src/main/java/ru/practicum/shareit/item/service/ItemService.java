@@ -18,29 +18,18 @@ public interface ItemService {
 
     void deleteItem(Long itemId);
 
-    boolean deleteItemsByOwner(Long ownerUserId);
-
     ItemDto getItemById(Long itemId);
 
-    List<ItemDto> getAllItems();
+    //List<ItemDto> getAllItems();
 
-    List<ItemDto> getAllItemsByOwner(Long ownerUserId);
-    List<ExtendedItemDto> findAll(Long ownerId);
+    List<ExtendedItemDto> getAllItemsByOwner(Long ownerUserId);
+    //List<ExtendedItemDto> findAll(Long ownerId);
 
     List<ItemDto> getItemsForRenter(String renterWishes);
 
     CommentDto addComment(Long itemId, Long userId, NewCommentDto comment);
 
-    // -- ** --
-
-    AdvancedItemDto findItem(Long ownerId, Long itemId);
-
-
-    ItemDto update(Long itemId, UpdateItemRequest request, Long ownerId);
-
-    void delete(Long ownerId, Long itemId);
-
-
-
+    //ExtendedItemDto findItem(Long ownerUserId, Long itemId);
+    ExtendedItemDto getOneItemByOwner(Long ownerUserId, Long itemId);
 
 }
