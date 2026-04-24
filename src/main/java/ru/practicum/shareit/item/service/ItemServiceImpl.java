@@ -134,10 +134,10 @@ public class ItemServiceImpl implements ItemService {
         User findUser = findUserById(userId);
         Item findItem = findById(itemId);
 
-        if (!bookingRepository.existsByBookerIdAndItemIdAndEndBefore(userId, itemId, LocalDateTime.now())) {
+       /* if (!bookingRepository.existsByBookerIdAndItemIdAndEndBefore(userId, itemId, LocalDateTime.now())) {
             throw new ValidationException(String.format("Пользователь %s не может добавить комментарий, " +
                     "так как не пользовался предметом %s", findUser.getName(), findItem.getName()));
-        }
+        }*/
 
         Comment comment = CommentMapper.mapToComment(findUser, findItem, request);
         comment = commentRepository.save(comment);
@@ -152,12 +152,12 @@ public class ItemServiceImpl implements ItemService {
         Map<Item, LocalDateTime> lastItemBookingEndDate = bookingRepository
                 .findByItemInAndEndBefore(itemIds)
                 .stream()
-                .collect(Collectors.toMap(Booking::getItem, Booking::getEnd));
+                .collect(Collectors.toMap(Booking::getItem, Booking::getEndDate));
 
         Map<Item, LocalDateTime> nextItemBookingStartDate = bookingRepository
                 .findByItemInAndStartAfter(itemIds)
                 .stream()
-                .collect(Collectors.toMap(Booking::getItem, Booking::getStart));
+                .collect(Collectors.toMap(Booking::getItem, Booking::getStartDate));
 
         Map<Item, List<Comment>> itemsWithComments = commentRepository
                 .findByItemIn(itemIds)
@@ -207,7 +207,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     private Optional<LocalDateTime> getLastBookingEndDate(Long itemId) {
-        return bookingRepository.findLastBookingEndByItemId(itemId)
+        return bookingRepository. findLastBookingEndByItemId(itemId)
                 .stream()
                 .max(Comparator.naturalOrder());
     }

@@ -20,8 +20,8 @@ public class BookingMapper {
         BookingDto dto = new BookingDto();
         dto.setId(booking.getId());
         dto.setItem(ItemMapper.mapToItemDto(booking.getItem()));
-        dto.setStart(booking.getStart());
-        dto.setEnd(booking.getEnd());
+        dto.setStart(booking.getStartDate());
+        dto.setEnd(booking.getEndDate());
         dto.setStatus(booking.getStatus());
         dto.setBooker(UserMapper.mapToUserDto(booking.getBooker()));
 
@@ -31,8 +31,8 @@ public class BookingMapper {
     public static Booking mapToBooking(NewBookingDto request, User booker, Item item) {
         Booking booking = new Booking();
         booking.setItem(item);
-        booking.setStart(request.getStart());
-        booking.setEnd(request.getEnd());
+        booking.setStartDate(request.getStart());
+        booking.setEndDate(request.getEnd());
         booking.setStatus(BookingStatuses.WAITING);
         booking.setBooker(booker);
 
@@ -41,11 +41,11 @@ public class BookingMapper {
 
     public static Booking updateBookingFields(Booking booking, UpdateBookingDto request) {
         if (request.hasStart()) {
-            booking.setStart(request.getStart());
+            booking.setStartDate(request.getStart());
         }
 
         if (request.hasEnd()) {
-            booking.setEnd(request.getEnd());
+            booking.setEndDate(request.getEnd());
         }
 
         booking.setStatus(request.getStatus());

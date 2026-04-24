@@ -2,6 +2,7 @@ package ru.practicum.shareit.booking.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.model.BookingStatuses;
 
@@ -16,77 +17,80 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     @Query("select b " +
             "from Booking as b " +
-            "where b.booker.id = ?1 " +
-            "and CURRENT_TIMESTAMP BETWEEN b.start and b.end")
-    List<Booking> findAllCurrentBookingByBookerId(Long bookerId);
+            "where b.booker.id = :id " +
+            "and CURRENT_TIMESTAMP BETWEEN b.startDate and b.endDate")
+    List<Booking> findAllCurrentBookingByBookerId(@Param("id")Long bookerId);
 
     @Query("select b " +
             "from Booking as b " +
-            "where b.booker.id = ?1 " +
-            "and CURRENT_TIMESTAMP > b.end")
-    List<Booking> findAllPastBookingByBookerId(Long bookerId);
+            "where b.booker.id = :id " +
+            "and CURRENT_TIMESTAMP > b.endDate")
+    List<Booking> findAllPastBookingByBookerId(@Param("id")Long bookerId);
 
     @Query("select b " +
             "from Booking as b " +
-            "where b.booker.id = ?1 " +
-            "and CURRENT_TIMESTAMP < b.start")
-    List<Booking> findAllFutureBookingByBookerId(Long bookerId);
+            "where b.booker.id = :id " +
+            "and CURRENT_TIMESTAMP < b.startDate")
+    List<Booking> findAllFutureBookingByBookerId(@Param("id")Long bookerId);
 
 
     @Query("select b " +
             "from Booking as b " +
-            "where b.item.user.id = ?1")
-    List<Booking> findAllByOwnerId(Long ownerId);
+            "where b.item.ownerUser.id = :id")
+    List<Booking> findAllByOwnerId(@Param("id")Long ownerId);
 
     @Query("select b " +
             "from Booking as b " +
-            "where b.item.user.id = ?1 " +
-            "and b.status = ?2")
-    List<Booking> findAllByOwnerIdAndStatus(Long ownerId, BookingStatuses status);
+            "where b.item.ownerUser.id = :id " +
+            "and b.status = :status")
+    List<Booking> findAllByOwnerIdAndStatus(@Param("id")Long ownerId, @Param("status")BookingStatuses status);
 
     @Query("select b " +
             "from Booking as b " +
-            "where b.item.user.id = ?1 " +
-            "and CURRENT_TIMESTAMP BETWEEN b.start and b.end")
-    List<Booking> findAllCurrentBookingByOwnerId(Long ownerId);
+            "where b.item.ownerUser.id = :id " +
+            "and CURRENT_TIMESTAMP BETWEEN b.startDate and b.endDate")
+    List<Booking> findAllCurrentBookingByOwnerId(@Param("id")Long ownerId);
 
     @Query("select b " +
             "from Booking as b " +
-            "where b.item.user.id = ?1 " +
-            "and CURRENT_TIMESTAMP > b.end")
-    List<Booking> findAllPastBookingByOwnerId(Long ownerId);
+            "where b.item.ownerUser.id = :id " +
+            "and CURRENT_TIMESTAMP > b.endDate")
+    List<Booking> findAllPastBookingByOwnerId(@Param("id")Long ownerId);
 
     @Query("select b " +
             "from Booking as b " +
-            "where b.item.user.id = ?1 " +
-            "and CURRENT_TIMESTAMP < b.start")
-    List<Booking> findAllFutureBookingByOwnerId(Long ownerId);
+            "where b.item.ownerUser.id = :id " +
+            "and CURRENT_TIMESTAMP < b.startDate")
+    List<Booking> findAllFutureBookingByOwnerId(@Param("id")Long ownerId);
 
+    /*@Query("select b " +
+            "from Booking as b " +
+            "where "
     Boolean existsByBookerIdAndItemIdAndEndBefore(Long bookerId, Long itemId, LocalDateTime localDateTime);
-
-    @Query("select b.start " +
+*/
+    @Query("select b.startDate " +
             "from Booking as b " +
-            "where b.item.id = ?1 " +
-            "and CURRENT_TIMESTAMP < b.start")
-    List<LocalDateTime> findNextBookingStartByItemId(Long itemId);
+            "where b.item.id = :id " +
+            "and CURRENT_TIMESTAMP < b.startDate")
+    List<LocalDateTime> findNextBookingStartByItemId(@Param("id")Long itemId);
 
-    @Query("select b.end " +
+    @Query("select b.endDate " +
             "from Booking as b " +
-            "where b.item.id = ?1 " +
-            "and CURRENT_TIMESTAMP > b.end")
-    List<LocalDateTime> findLastBookingEndByItemId(Long itemId);
-
-    @Query("select b " +
-            "from Booking as b " +
-            "where b.item.id in (?1) " +
-            "and CURRENT_TIMESTAMP > b.end " +
-            "order by b.end DESC")
-    List<Booking> findByItemInAndEndBefore(List<Long> ids);
+            "where b.item.id = :id " +
+            "and CURRENT_TIMESTAMP > b.endDate ")
+    List<LocalDateTime> findLastBookingEndByItemId(@Param("id")Long itemId);
 
     @Query("select b " +
             "from Booking as b " +
-            "where b.item.id in (?1) " +
-            "and CURRENT_TIMESTAMP < b.start " +
-            "order by b.end ASC")
-    List<Booking> findByItemInAndStartAfter(List<Long> ids);
+            "where b.item.id in (:ids) " +
+            "and CURRENT_TIMESTAMP > b.endDate " +
+            "order by b.endDate DESC")
+    List<Booking> findByItemInAndEndBefore(@Param("ids")List<Long> ids);
+
+    @Query("select b " +
+            "from Booking as b " +
+            "where b.item.id in (:ids) " +
+            "and CURRENT_TIMESTAMP < b.startDate " +
+            "order by b.endDate ASC")
+    List<Booking> findByItemInAndStartAfter(@Param("ids")List<Long> ids);
 }

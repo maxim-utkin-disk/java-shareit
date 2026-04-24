@@ -3,7 +3,6 @@ CREATE TABLE IF NOT EXISTS users (
   email VARCHAR(100) NOT NULL,
   name VARCHAR(100) NOT NULL,
   birthday DATE,
-  CONSTRAINT user_pk PRIMARY KEY (id),
   CONSTRAINT user_email_uk UNIQUE (email)
 );
 
@@ -12,7 +11,6 @@ CREATE TABLE IF NOT EXISTS requests (
   description VARCHAR(255) NOT NULL,
   requestor_id BIGINT NOT NULL,
   created TIMESTAMP WITHOUT TIME ZONE,
-  CONSTRAINT request_pk PRIMARY KEY (id),
   CONSTRAINT requestor_fk FOREIGN KEY (requestor_id) REFERENCES users(id)
 );
 
@@ -23,7 +21,6 @@ CREATE TABLE IF NOT EXISTS items (
   available BOOLEAN NOT NULL,
   owner_id BIGINT,
   request_id BIGINT,
-  CONSTRAINT item_pk PRIMARY KEY (id),
   CONSTRAINT owner_fk FOREIGN KEY (owner_id) REFERENCES users(id),
   CONSTRAINT request_fk FOREIGN KEY (request_id) REFERENCES requests(id)
 );
@@ -35,7 +32,6 @@ CREATE TABLE IF NOT EXISTS bookings (
   item_id BIGINT NOT NULL,
   status VARCHAR(100) NOT NULL,
   booker_id BIGINT NOT NULL,
-  CONSTRAINT booking_pk PRIMARY KEY (id),
   CONSTRAINT item_booking_fk FOREIGN KEY (item_id) REFERENCES items(id),
   CONSTRAINT booker_fk FOREIGN KEY (booker_id) REFERENCES users(id)
 );
@@ -46,7 +42,6 @@ CREATE TABLE IF NOT EXISTS comments (
   item_id BIGINT,
   author_id BIGINT,
   created TIMESTAMP WITHOUT TIME ZONE,
-  CONSTRAINT comment_pk PRIMARY KEY (id),
   CONSTRAINT item_comment_pk FOREIGN KEY (item_id) REFERENCES items(id),
   CONSTRAINT author_pk FOREIGN KEY (author_id) REFERENCES users(id)
 );
