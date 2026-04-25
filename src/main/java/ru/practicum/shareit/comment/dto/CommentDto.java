@@ -10,12 +10,17 @@ import java.time.LocalDateTime;
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CommentDto {
+
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     Long id;
+
     String text;
+
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     Long itemId;
+
     String authorName;
+
     LocalDateTime created;
 }
 

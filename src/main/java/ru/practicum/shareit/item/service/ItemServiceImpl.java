@@ -26,6 +26,7 @@ import ru.practicum.shareit.item.repository.ItemRepository;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
 
+import java.awt.print.Book;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -99,8 +100,42 @@ public class ItemServiceImpl implements ItemService {
         itemRepository.delete(item);
     }
 
-    public ItemDto getItemById(Long itemId) {
-        return ItemMapper.mapToItemDto(findById(itemId));
+    public ExtendedItemDto getItemById(Long itemId) {
+        //Item i = findById(itemId);
+        return fillItemData(Arrays.asList(findById(itemId))).getFirst();
+
+        /*List<Booking> bookingsOfItem = bookingRepository.findByItemInAndEndBefore(Arrays.asList(itemId));
+
+        Optional<LocalDateTime> lastEndDate;
+        if (bookingsOfItem.size() == 1) {
+            lastEndDate = Optional.ofNullable(bookingsOfItem.getFirst().getEndDate());
+        } else {
+            lastEndDate = Optional.empty();
+        }
+
+        Optional<LocalDateTime> lastEndDate;
+        if (!lastItemBookingEndDate.isEmpty()) {
+            lastEndDate = Optional.of(lastItemBookingEndDate.get(item));
+        } else {
+            lastEndDate = Optional.empty();
+        }
+
+        Optional<LocalDateTime> nextStartDate;
+        if (!nextItemBookingStartDate.isEmpty()) {
+            nextStartDate = Optional.of(nextItemBookingStartDate.get(item));
+        } else {
+            nextStartDate = Optional.empty();
+        }
+
+        itemsList.add(ItemMapper.mapToExtendedItemDto(item,
+                        itemsWithComments.getOrDefault(item, Collections.emptyList()),
+                        lastEndDate,
+                        nextStartDate
+                )
+        );
+
+
+        return ItemMapper.mapToExtendedItemDto(i, commentList, lastEndDate, );*/
     }
 
 //    public List<ItemDto> getAllItems() {

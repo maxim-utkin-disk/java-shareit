@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import ru.practicum.shareit.item.model.Item;
 
-import java.util.Collection;
 import java.util.List;
 
 public interface ItemRepository extends JpaRepository<Item, Long> {
@@ -16,7 +15,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     @Query("select it " +
             "from Item as it " +
-            //"join it.user as u " +
+            "join it.ownerUser as u " +
             "where it.available = true " +
             "and (lower(it.name) like lower(concat('%', :text, '%')) " +
             "or lower(it.description) like lower(concat('%', :text, '%'))) ")

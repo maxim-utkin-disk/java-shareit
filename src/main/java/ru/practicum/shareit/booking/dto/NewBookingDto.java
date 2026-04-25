@@ -22,7 +22,7 @@ public class NewBookingDto {
     @NotNull(message = "Требуется указать id предмета бронирования")
     Long itemId;
 
-    @NotNull(message = "Требуется указать id бронирующего пользователя")
+    //@NotNull(message = "Требуется указать id бронирующего пользователя")
     Long bookerId;
 }
 

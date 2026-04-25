@@ -18,7 +18,8 @@ public interface ItemService {
 
     void deleteItem(Long itemId);
 
-    ItemDto getItemById(Long itemId);
+    //ItemDto getItemById(Long itemId);
+    ExtendedItemDto getItemById(Long itemId);
 
     //List<ItemDto> getAllItems();
 

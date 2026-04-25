@@ -9,6 +9,8 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @EqualsAndHashCode(of = {"id"})
 public class UpdateCommentDto {
+
     Long id;
+
     String text;
 }

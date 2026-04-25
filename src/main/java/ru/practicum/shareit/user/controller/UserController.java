@@ -1,5 +1,6 @@
 package ru.practicum.shareit.user.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -18,28 +19,33 @@ public class UserController {
     private final String idParamPath = "/{id}";
 
     @PostMapping
-    public UserDto create(@Valid @RequestBody CreateNewUserDto newUser) {
+    public UserDto create(/*@Valid*/ @RequestBody CreateNewUserDto newUser, HttpServletRequest request) {
+        System.out.println(">>> sout: " + request.getMethod().toString() + " " + request.getRequestURL().toString());
         return userService.createNewUser(newUser);
     }
 
     @PatchMapping(idParamPath)
     public UserDto update(@PathVariable("id") Long userId,
-                          @Valid @RequestBody UpdateExistsUserDto newUser) {
+                          /*@Valid*/ @RequestBody UpdateExistsUserDto newUser, HttpServletRequest request) {
+        System.out.println(">>> sout: " + request.getMethod().toString() + " " + request.getRequestURL().toString());
         return userService.updateExistsUser(userId, newUser);
     }
 
     @DeleteMapping(idParamPath)
-    public boolean delete(@PathVariable("id") Long userId) {
+    public boolean delete(@PathVariable("id") Long userId, HttpServletRequest request) {
+        System.out.println(">>> sout: " + request.getMethod().toString() + " " + request.getRequestURL().toString());
         return userService.deleteUser(userId);
     }
 
     @GetMapping(idParamPath)
-    public UserDto findUser(@PathVariable("id") Long userId) {
+    public UserDto findUser(@PathVariable("id") Long userId, HttpServletRequest request) {
+        System.out.println(">>> sout: " + request.getMethod().toString() + " " + request.getRequestURL().toString());
         return userService.getUserById(userId);
     }
 
     @GetMapping
-    public List<UserDto> getUsers() {
+    public List<UserDto> getUsers(HttpServletRequest request) {
+        System.out.println(">>> sout: " + request.getMethod().toString() + " " + request.getRequestURL().toString());
         return userService.getAllUsers();
     }
 
