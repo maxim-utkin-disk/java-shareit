@@ -1,10 +1,7 @@
 package ru.practicum.shareit.item.controller;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.comment.dto.CommentDto;
 import ru.practicum.shareit.comment.dto.NewCommentDto;
@@ -24,59 +21,44 @@ import java.util.List;
 public class ItemController {
     private final ItemService itemService;
     private final String idParamPath = "/{itemId}";
-    //private final String idParamPathComment = idParamPath + "/comment";
 
     @PostMapping("/{itemId}/comment")
-    //@ResponseStatus(HttpStatus.CREATED)
     public CommentDto addComment(@PathVariable("itemId") Long itemId,
                                  @RequestHeader("X-Sharer-User-Id") Long userId,
-                                 /*@Valid*/ @RequestBody NewCommentDto comment, HttpServletRequest request) {
-        System.out.println(">>> sout: " + request.getMethod().toString() + " " + request.getRequestURL().toString());
+                                 @RequestBody NewCommentDto comment) {
         return itemService.addComment(itemId, userId, comment);
     }
 
     @PostMapping
     public ItemDto createNewItem(@RequestHeader("X-Sharer-User-Id") Long ownerUserId,
-                          /*@Valid*/ @RequestBody CreateNewItemDto newItem,
-                                 HttpServletRequest request
-                                 ) {
-        ///log.error(" >>>> !!!! >>>>" + request.getRequestURL());
-        //System.out.println(" >>>> !!!! >>>>" + request.getRequestURL());
-        System.out.println(">>> sout: " + request.getMethod().toString() + " " + request.getRequestURL().toString());
+                                 @RequestBody CreateNewItemDto newItem) {
         return itemService.createNewItem(newItem, ownerUserId);
     }
 
     @GetMapping("/search")
-    public Collection<ItemDto> getItemsForRenter(@RequestParam(name = "text", defaultValue = "") String renterWishes, HttpServletRequest request) {
-        System.out.println(">>> sout: " + request.getMethod().toString() + " " + request.getRequestURL().toString());
+    public Collection<ItemDto> getItemsForRenter(@RequestParam(name = "text", defaultValue = "") String renterWishes) {
         return itemService.getItemsForRenter(renterWishes);
     }
 
     @GetMapping(idParamPath)
-    public ExtendedItemDto getItemByOwnerAndId(@RequestHeader("X-Sharer-User-Id") Long ownerUserId, @PathVariable("itemId") Long itemId, HttpServletRequest request) {
-        System.out.println(">>> sout: " + request.getMethod().toString() + " " + request.getRequestURL().toString());
-        //return itemService.getItemById(itemId);
+    public ExtendedItemDto getItemByOwnerAndId(@RequestHeader("X-Sharer-User-Id") Long ownerUserId, @PathVariable("itemId") Long itemId) {
         return itemService.getItemByOwnerAndId(ownerUserId, itemId);
     }
 
     @GetMapping
-    public List<ExtendedItemDto> findAll(@RequestHeader("X-Sharer-User-Id") Long ownerUserId, HttpServletRequest request) {
-        //return itemService.findAll(ownerUserId);
-        System.out.println(">>> sout: " + request.getMethod().toString() + " " + request.getRequestURL().toString());
+    public List<ExtendedItemDto> findAll(@RequestHeader("X-Sharer-User-Id") Long ownerUserId) {
         return itemService.getAllItemsByOwner(ownerUserId);
     }
 
     @PatchMapping(idParamPath)
     public ItemDto updateExistsItem(@PathVariable("itemId") Long itemId,
-                          /*@Valid*/ @RequestBody UpdateExistsItemDto newItem,
-                          @RequestHeader("X-Sharer-User-Id") Long ownerUserId, HttpServletRequest request) {
-        System.out.println(">>> sout: " + request.getMethod().toString() + " " + request.getRequestURL().toString());
+                          @RequestBody UpdateExistsItemDto newItem,
+                          @RequestHeader("X-Sharer-User-Id") Long ownerUserId) {
         return itemService.updateExistsItem(newItem, ownerUserId, itemId);
     }
 
     @DeleteMapping(idParamPath)
-    public void deleteItem(@PathVariable("itemId") Long itemId, HttpServletRequest request) {
-        System.out.println(">>> sout: " + request.getMethod().toString() + " " + request.getRequestURL().toString());
+    public void deleteItem(@PathVariable("itemId") Long itemId) {
         itemService.deleteItem(itemId);
     }
 

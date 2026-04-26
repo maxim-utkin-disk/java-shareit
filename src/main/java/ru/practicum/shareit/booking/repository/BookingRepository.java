@@ -33,7 +33,6 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             "and CURRENT_TIMESTAMP < b.startDate")
     List<Booking> findAllFutureBookingByBookerId(@Param("id")Long bookerId);
 
-
     @Query("select b " +
             "from Booking as b " +
             "where b.item.ownerUser.id = :id")
@@ -63,11 +62,6 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             "and CURRENT_TIMESTAMP < b.startDate")
     List<Booking> findAllFutureBookingByOwnerId(@Param("id")Long ownerId);
 
-    /*@Query("select b " +
-            "from Booking as b " +
-            "where "
-    Boolean existsByBookerIdAndItemIdAndEndBefore(Long bookerId, Long itemId, LocalDateTime localDateTime);
-*/
     @Query("select b.startDate " +
             "from Booking as b " +
             "where b.item.id = :id " +
@@ -94,7 +88,6 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             "order by b.endDate ASC")
     List<Booking> findByItemInAndStartAfter(@Param("ids")List<Long> ids);
 
-    //Boolean existsByBookerIdAndItemIdAndEndBefore(Long bookerId, Long itemId, LocalDateTime checkDate);
     @Query("SELECT CASE WHEN COUNT(b) > 0 THEN TRUE ELSE FALSE END " +
             "FROM Booking b " +
             "WHERE b.booker.id = :bookerId " +
@@ -104,6 +97,5 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             @Param("bookerId") Long bookerId,
             @Param("itemId") Long itemId,
             @Param("checkDate") LocalDateTime checkDate);
-
 
 }

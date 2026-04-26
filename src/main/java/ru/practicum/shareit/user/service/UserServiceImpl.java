@@ -22,13 +22,8 @@ import java.util.Optional;
 @Slf4j
 @Service
 public class UserServiceImpl implements UserService {
-    //private final UserStorage userStorage;
     UserRepository repository;
 
-    /*@Autowired
-    public UserServiceImpl(@Qualifier("UserStorageInMemory") UserStorage userStorage) {
-      this.userStorage = userStorage;
-    }*/
     public UserServiceImpl(UserRepository repository) {
         this.repository = repository;
     }
@@ -72,9 +67,6 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public boolean deleteUser(Long userId) {
-        /*User user = userStorage.selectOne(userId);
-        log.debug("Удаление пользователя {}", user.toString());
-        return userStorage.delete(userId);*/
         User delUser = findById(userId);
         log.debug("Удаление пользователя {}", delUser.toString());
         repository.delete(delUser);
@@ -88,9 +80,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserById(Long userId) {
-        //return UserMapper.mapToUserDto(userStorage.selectOne(userId));
-        //User u = repository.findById(userId)
-        //        .orElseThrow(() -> new NotFoundException(String.format("Пользователь id = %d не найден", userId)));
         return UserMapper.mapToUserDto(findById(userId));
     }
 
@@ -98,7 +87,6 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public List<UserDto> getAllUsers() {
         log.debug("Получение полного списка пользователей");
-        //return userStorage.selectAll().stream().map(UserMapper::mapToUserDto).toList();
         return repository.findAll().stream().map(UserMapper::mapToUserDto).toList();
     }
 

@@ -7,7 +7,6 @@ import ru.practicum.shareit.item.dto.ExtendedItemDto;
 import ru.practicum.shareit.item.dto.UpdateExistsItemDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 
-import java.util.Collection;
 import java.util.List;
 
 public interface ItemService {
@@ -18,20 +17,12 @@ public interface ItemService {
 
     void deleteItem(Long itemId);
 
-    //ItemDto getItemById(Long itemId);
-    ExtendedItemDto getItemById(Long itemId);
     ExtendedItemDto getItemByOwnerAndId(Long ownerUserId, Long itemId);
 
-    //List<ItemDto> getAllItems();
-
     List<ExtendedItemDto> getAllItemsByOwner(Long ownerUserId);
-    //List<ExtendedItemDto> findAll(Long ownerId);
 
     List<ItemDto> getItemsForRenter(String renterWishes);
 
     CommentDto addComment(Long itemId, Long userId, NewCommentDto comment);
-
-    //ExtendedItemDto findItem(Long ownerUserId, Long itemId);
-    //ExtendedItemDto getOneItemByOwner(Long ownerUserId, Long itemId);
 
 }

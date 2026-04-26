@@ -18,16 +18,16 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    /*private*/ Long id;
+    Long id;
 
     @NotBlank(message = "@-адрес не должен быть пустым")
     @Column(length = 100, nullable = false, unique = true)
     @Email(message = "@-адрес должен быть в формате user@server.domain")
-    /*private*/ String email;
+    String email;
 
     @NotBlank(message = "имя (логин) пользователя  не должно быть пустым")
     @Column(length = 100, nullable = false)
-    /*private*/ String name;
+    String name;
 
 }
 

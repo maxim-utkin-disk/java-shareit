@@ -26,7 +26,6 @@ import ru.practicum.shareit.item.repository.ItemRepository;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
 
-import java.awt.print.Book;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -101,24 +100,6 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Transactional(readOnly = true)
-    public ExtendedItemDto getItemById(Long itemId) {
-        //return fillItemData(Arrays.asList(findById(itemId))).getFirst();
-
-        log.debug("Поиск сведений о предмете бронирования id = {}", itemId);
-        //Item item = findById(itemId);
-
-        //if (item.getOwnerUser().getId().equals(ownerUserId)) {
-            return ItemMapper.mapToExtendedItemDto(findById(itemId),
-                    commentRepository.findAllByItemId(itemId),
-                    getLastBookingEndDate(itemId),
-                    getNextBookingStartDate(itemId));
-        //}
-
-        //return ItemMapper.mapToExtendedItemDto(findById(itemId), commentRepository.findAllByItemId(itemId));
-
-    }
-
-    @Transactional(readOnly = true)
     public ExtendedItemDto getItemByOwnerAndId(Long ownerUserId, Long itemId) {
         log.debug("Поиск сведений о предмете бронирования id = {}, принадлежащего владельцу user_id = {}", itemId, ownerUserId);
         Item item = findById(itemId);
@@ -133,17 +114,6 @@ public class ItemServiceImpl implements ItemService {
         return ItemMapper.mapToExtendedItemDto(findById(itemId), commentRepository.findAllByItemId(itemId));
     }
 
-
-//    public List<ItemDto> getAllItems() {
-//        log.debug("Получение всех записей обо всех предметах бронирования всех владельцев");
-//        return itemStorage.selectAll().stream().map(ItemMapper::mapToItemDto).toList();
-//    }
-
-//    public List<ItemDto> getAllItemsByOwner(Long ownerUserId) {
-//        log.debug("Получение записей обо всех предметах бронирования по указанному владельцу");
-//        return itemStorage.selectAllItemsByOwner(ownerUserId).stream().map(ItemMapper::mapToItemDto).toList();
-//    }
-
     public List<ItemDto> getItemsForRenter(String renterWishes) {
         log.debug("Поиск предметов бронирования по ключевым словам \"{}\"", renterWishes);
         if (renterWishes.isEmpty()) {
@@ -153,8 +123,6 @@ public class ItemServiceImpl implements ItemService {
         return itemRepository.getItemsForRenter(renterWishes.toLowerCase()).stream()
                 .map(ItemMapper::mapToItemDto)
                 .toList();
-
-
     }
 
     @Override
@@ -222,7 +190,6 @@ public class ItemServiceImpl implements ItemService {
         return itemsList;
     }
 
-
     @Override
     @Transactional(readOnly = true)
     public List<ExtendedItemDto> getAllItemsByOwner(Long ownerUserId) {
@@ -248,21 +215,5 @@ public class ItemServiceImpl implements ItemService {
                 .stream()
                 .min(Comparator.naturalOrder());
     }
-
-    /*@Override
-    @Transactional(readOnly = true)
-    public ExtendedItemDto getOneItemByOwner(Long ownerUserId, Long itemId) {
-        log.debug("Поиск сведений о предмете бронирования id = {} и владельцу {}", itemId, ownerUserId);
-        Item item = findById(itemId);
-
-        if (item.getOwnerUser().getId().equals(ownerUserId)) {
-            return ItemMapper.mapToExtendedItemDto(findById(itemId),
-                    commentRepository.findAllByItemId(itemId),
-                    getLastBookingEndDate(itemId),
-                    getNextBookingStartDate(itemId));
-        }
-
-        return ItemMapper.mapToExtendedItemDto(findById(itemId), commentRepository.findAllByItemId(itemId));
-    }*/
 
 }
