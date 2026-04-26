@@ -27,7 +27,7 @@ public class ItemController {
     //private final String idParamPathComment = idParamPath + "/comment";
 
     @PostMapping("/{itemId}/comment")
-    @ResponseStatus(HttpStatus.CREATED)
+    //@ResponseStatus(HttpStatus.CREATED)
     public CommentDto addComment(@PathVariable("itemId") Long itemId,
                                  @RequestHeader("X-Sharer-User-Id") Long userId,
                                  /*@Valid*/ @RequestBody NewCommentDto comment, HttpServletRequest request) {
@@ -53,9 +53,10 @@ public class ItemController {
     }
 
     @GetMapping(idParamPath)
-    public ExtendedItemDto getItemById(@PathVariable("itemId") Long itemId, HttpServletRequest request) {
+    public ExtendedItemDto getItemByOwnerAndId(@RequestHeader("X-Sharer-User-Id") Long ownerUserId, @PathVariable("itemId") Long itemId, HttpServletRequest request) {
         System.out.println(">>> sout: " + request.getMethod().toString() + " " + request.getRequestURL().toString());
-        return itemService.getItemById(itemId);
+        //return itemService.getItemById(itemId);
+        return itemService.getItemByOwnerAndId(ownerUserId, itemId);
     }
 
     @GetMapping

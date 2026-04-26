@@ -100,43 +100,39 @@ public class ItemServiceImpl implements ItemService {
         itemRepository.delete(item);
     }
 
+    @Transactional(readOnly = true)
     public ExtendedItemDto getItemById(Long itemId) {
-        //Item i = findById(itemId);
-        return fillItemData(Arrays.asList(findById(itemId))).getFirst();
+        //return fillItemData(Arrays.asList(findById(itemId))).getFirst();
 
-        /*List<Booking> bookingsOfItem = bookingRepository.findByItemInAndEndBefore(Arrays.asList(itemId));
+        log.debug("Поиск сведений о предмете бронирования id = {}", itemId);
+        //Item item = findById(itemId);
 
-        Optional<LocalDateTime> lastEndDate;
-        if (bookingsOfItem.size() == 1) {
-            lastEndDate = Optional.ofNullable(bookingsOfItem.getFirst().getEndDate());
-        } else {
-            lastEndDate = Optional.empty();
-        }
+        //if (item.getOwnerUser().getId().equals(ownerUserId)) {
+            return ItemMapper.mapToExtendedItemDto(findById(itemId),
+                    commentRepository.findAllByItemId(itemId),
+                    getLastBookingEndDate(itemId),
+                    getNextBookingStartDate(itemId));
+        //}
 
-        Optional<LocalDateTime> lastEndDate;
-        if (!lastItemBookingEndDate.isEmpty()) {
-            lastEndDate = Optional.of(lastItemBookingEndDate.get(item));
-        } else {
-            lastEndDate = Optional.empty();
-        }
+        //return ItemMapper.mapToExtendedItemDto(findById(itemId), commentRepository.findAllByItemId(itemId));
 
-        Optional<LocalDateTime> nextStartDate;
-        if (!nextItemBookingStartDate.isEmpty()) {
-            nextStartDate = Optional.of(nextItemBookingStartDate.get(item));
-        } else {
-            nextStartDate = Optional.empty();
-        }
-
-        itemsList.add(ItemMapper.mapToExtendedItemDto(item,
-                        itemsWithComments.getOrDefault(item, Collections.emptyList()),
-                        lastEndDate,
-                        nextStartDate
-                )
-        );
-
-
-        return ItemMapper.mapToExtendedItemDto(i, commentList, lastEndDate, );*/
     }
+
+    @Transactional(readOnly = true)
+    public ExtendedItemDto getItemByOwnerAndId(Long ownerUserId, Long itemId) {
+        log.debug("Поиск сведений о предмете бронирования id = {}, принадлежащего владельцу user_id = {}", itemId, ownerUserId);
+        Item item = findById(itemId);
+
+        if (item.getOwnerUser().getId().equals(ownerUserId)) {
+            return ItemMapper.mapToExtendedItemDto(findById(itemId),
+                    commentRepository.findAllByItemId(itemId),
+                    getLastBookingEndDate(itemId),
+                    getNextBookingStartDate(itemId));
+        }
+
+        return ItemMapper.mapToExtendedItemDto(findById(itemId), commentRepository.findAllByItemId(itemId));
+    }
+
 
 //    public List<ItemDto> getAllItems() {
 //        log.debug("Получение всех записей обо всех предметах бронирования всех владельцев");
@@ -242,7 +238,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     private Optional<LocalDateTime> getLastBookingEndDate(Long itemId) {
-        return bookingRepository. findLastBookingEndByItemId(itemId)
+        return bookingRepository.findLastBookingEndByItemId(itemId)
                 .stream()
                 .max(Comparator.naturalOrder());
     }
@@ -253,7 +249,7 @@ public class ItemServiceImpl implements ItemService {
                 .min(Comparator.naturalOrder());
     }
 
-    @Override
+    /*@Override
     @Transactional(readOnly = true)
     public ExtendedItemDto getOneItemByOwner(Long ownerUserId, Long itemId) {
         log.debug("Поиск сведений о предмете бронирования id = {} и владельцу {}", itemId, ownerUserId);
@@ -267,6 +263,6 @@ public class ItemServiceImpl implements ItemService {
         }
 
         return ItemMapper.mapToExtendedItemDto(findById(itemId), commentRepository.findAllByItemId(itemId));
-    }
+    }*/
 
 }

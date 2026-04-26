@@ -20,6 +20,7 @@ public interface ItemService {
 
     //ItemDto getItemById(Long itemId);
     ExtendedItemDto getItemById(Long itemId);
+    ExtendedItemDto getItemByOwnerAndId(Long ownerUserId, Long itemId);
 
     //List<ItemDto> getAllItems();
 
@@ -31,6 +32,6 @@ public interface ItemService {
     CommentDto addComment(Long itemId, Long userId, NewCommentDto comment);
 
     //ExtendedItemDto findItem(Long ownerUserId, Long itemId);
-    ExtendedItemDto getOneItemByOwner(Long ownerUserId, Long itemId);
+    //ExtendedItemDto getOneItemByOwner(Long ownerUserId, Long itemId);
 
 }
