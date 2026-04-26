@@ -93,4 +93,17 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
             "and CURRENT_TIMESTAMP < b.startDate " +
             "order by b.endDate ASC")
     List<Booking> findByItemInAndStartAfter(@Param("ids")List<Long> ids);
+
+    //Boolean existsByBookerIdAndItemIdAndEndBefore(Long bookerId, Long itemId, LocalDateTime checkDate);
+    @Query("SELECT CASE WHEN COUNT(b) > 0 THEN TRUE ELSE FALSE END " +
+            "FROM Booking b " +
+            "WHERE b.booker.id = :bookerId " +
+            "  AND b.item.id = :itemId " +
+            "  AND b.endDate < :checkDate")
+    Boolean existsByBookerIdAndItemIdAndEndBefore(
+            @Param("bookerId") Long bookerId,
+            @Param("itemId") Long itemId,
+            @Param("checkDate") LocalDateTime checkDate);
+
+
 }
