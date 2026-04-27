@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode(of = {"id"})
 @Entity
 @Table(name = "comments")
 @FieldDefaults(level = AccessLevel.PRIVATE)

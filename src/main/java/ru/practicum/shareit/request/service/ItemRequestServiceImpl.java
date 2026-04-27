@@ -58,13 +58,11 @@ public class ItemRequestServiceImpl implements ItemRequestService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public ItemRequestDto findItemRequest(Long itemRequestId) {
         return ItemRequestMapper.mapToItemRequestDto(findById(itemRequestId));
     }
 
     @Override
-    @Transactional(readOnly = true)
     public Collection<ItemRequestDto> findAll() {
         log.debug("Получаем записи о всех запросах");
         return itemRequestRepository.findAll()

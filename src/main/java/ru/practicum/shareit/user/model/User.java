@@ -9,11 +9,9 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode(of = {"id"})
 @Entity
 @Table(name = "users")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Data
 public class User {
 
     @Id

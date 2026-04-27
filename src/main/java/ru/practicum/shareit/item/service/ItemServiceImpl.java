@@ -99,7 +99,6 @@ public class ItemServiceImpl implements ItemService {
         itemRepository.delete(item);
     }
 
-    @Transactional(readOnly = true)
     public ExtendedItemDto getItemByOwnerAndId(Long ownerUserId, Long itemId) {
         log.debug("Поиск сведений о предмете бронирования id = {}, принадлежащего владельцу user_id = {}", itemId, ownerUserId);
         Item item = findById(itemId);
@@ -191,7 +190,6 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<ExtendedItemDto> getAllItemsByOwner(Long ownerUserId) {
         log.debug("Получение записей обо всех предметах бронирования по указанному владельцу id = {}", ownerUserId);
 

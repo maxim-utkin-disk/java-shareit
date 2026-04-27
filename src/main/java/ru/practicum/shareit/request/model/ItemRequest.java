@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @Setter
 @ToString
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@EqualsAndHashCode(of = {"id"})
 @Entity
 @Table(name = "requests")
 public class ItemRequest {

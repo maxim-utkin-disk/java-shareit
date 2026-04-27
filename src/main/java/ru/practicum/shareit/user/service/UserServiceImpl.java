@@ -81,7 +81,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<UserDto> getAllUsers() {
         log.debug("Получение полного списка пользователей");
         return repository.findAll().stream().map(UserMapper::mapToUserDto).toList();

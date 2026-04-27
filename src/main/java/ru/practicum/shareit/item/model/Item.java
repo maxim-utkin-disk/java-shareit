@@ -9,7 +9,6 @@ import ru.practicum.shareit.request.model.ItemRequest;
 import ru.practicum.shareit.user.model.User;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@EqualsAndHashCode(of = {"id"})
 @Getter
 @Setter
 @ToString

@@ -79,7 +79,6 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public BookingDto findBooking(Long bookingId, Long userId) {
         log.debug("Ищем бронирование с ID {}", bookingId);
 
@@ -93,7 +92,6 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public Collection<BookingDto> findAllBookingsByUser(Long userId, String state) {
         BookingStates currentState = BookingStates.valueOf(state);
         User findUser = findUserById(userId);
@@ -135,7 +133,6 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public Collection<BookingDto> findAllBookingsByOwnerItems(Long userId, String state) {
         BookingStates currentState = BookingStates.valueOf(state);
         User findUser = findUserById(userId);
