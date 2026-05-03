@@ -1,6 +1,9 @@
 package ru.practicum.shareit.item.service;
 
+import ru.practicum.shareit.comment.dto.CommentDto;
+import ru.practicum.shareit.comment.dto.NewCommentDto;
 import ru.practicum.shareit.item.dto.CreateNewItemDto;
+import ru.practicum.shareit.item.dto.ExtendedItemDto;
 import ru.practicum.shareit.item.dto.UpdateExistsItemDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 
@@ -12,16 +15,14 @@ public interface ItemService {
 
     ItemDto updateExistsItem(UpdateExistsItemDto newItem, Long ownerUserId, Long itemId);
 
-    boolean deleteItem(Long itemId);
+    void deleteItem(Long itemId);
 
-    boolean deleteItemsByOwner(Long ownerUserId);
+    ExtendedItemDto getItemByOwnerAndId(Long ownerUserId, Long itemId);
 
-    ItemDto getItemById(Long itemId);
+    List<ExtendedItemDto> getAllItemsByOwner(Long ownerUserId);
 
-    List<ItemDto> getAllItems();
+    List<ItemDto> getItemsForRenter(String renterWishes);
 
-    List<ItemDto> getAllItemsByOwner(Long ownerUserId);
-
-    List<ItemDto> getItemsForRent(String renterWishes);
+    CommentDto addComment(Long itemId, Long userId, NewCommentDto comment);
 
 }

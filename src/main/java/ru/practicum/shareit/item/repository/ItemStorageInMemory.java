@@ -38,11 +38,11 @@ public class ItemStorageInMemory implements ItemStorage {
     public boolean deleteByOwner(Long ownerUserId) {
         log.trace("Удаление всех предметов бронирования владельца id={}", ownerUserId);
         items.entrySet().removeIf(item ->
-                (item.getValue().getOwner() != null)
-                && (item.getValue().getOwner().equals(ownerUserId))
+                (item.getValue().getOwnerUser().getId() != null)
+                && (item.getValue().getOwnerUser().getId().equals(ownerUserId))
         );
         Long cnt = items.values().stream().filter(item ->
-                        (item.getOwner() != null) && (item.getOwner().equals(ownerUserId))
+                        (item.getOwnerUser().getId() != null) && (item.getOwnerUser().getId().equals(ownerUserId))
                         ).count();
         return (cnt == 0);
     }
@@ -59,7 +59,7 @@ public class ItemStorageInMemory implements ItemStorage {
     public List<Item> selectAllItemsByOwner(Long ownerUserId) {
         return items.values()
                 .stream()
-                .filter(item -> item.getOwner().equals(ownerUserId))
+                .filter(item -> item.getOwnerUser().getId().equals(ownerUserId))
                 .toList();
     }
 
