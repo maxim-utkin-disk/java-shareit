@@ -15,5 +15,8 @@ public interface ItemRequestService {
     ItemRequestDto update(Long requestId, Long user, UpdateItemRequestDto updateItemRequestDto);
 
     void delete(Long itemRequestId);
+
+    Collection<ItemRequestDto> findAllOfAnotherRequestors(Long requestorId);
+
 }
 

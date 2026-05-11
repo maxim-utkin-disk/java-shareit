@@ -22,11 +22,16 @@ public class ItemRequestController {
         return itemRequestService.findItemRequest(requestId);
     }
 
-    @GetMapping
+    @GetMapping("/all")
+    public Collection<ItemRequestDto> findAllOfAnotherRequestors(@RequestHeader("X-Sharer-User-Id") Long requestorId) {
+        return itemRequestService.findAllOfAnotherRequestors(requestorId);
+    }
+
+    /*@GetMapping
     public Collection<ItemRequestDto> findAll() {
         return itemRequestService.findAll();
     }
-
+*/
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ItemRequestDto create(@RequestHeader("X-Sharer-User-Id") Long userId,

@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.exception.ValidationException;
+import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.item.repository.ItemRepository;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
 import ru.practicum.shareit.request.mapper.ItemRequestMapper;
 import ru.practicum.shareit.user.repository.UserRepository;
@@ -27,11 +29,14 @@ import ru.practicum.shareit.user.model.User;
 public class ItemRequestServiceImpl implements ItemRequestService {
     ItemRequestRepository itemRequestRepository;
     UserRepository userRepository;
+    ItemRepository itemRepository;
 
     @Autowired
-    public ItemRequestServiceImpl(ItemRequestRepository itemRequestRepository, UserRepository userRepository) {
+    public ItemRequestServiceImpl(ItemRequestRepository itemRequestRepository, UserRepository userRepository,
+                                  ItemRepository itemRepository) {
         this.itemRequestRepository = itemRequestRepository;
         this.userRepository = userRepository;
+        this.itemRepository = itemRepository;
     }
 
     private ItemRequest findById(Long itemRequestId) {
@@ -59,7 +64,14 @@ public class ItemRequestServiceImpl implements ItemRequestService {
 
     @Override
     public ItemRequestDto findItemRequest(Long itemRequestId) {
-        return ItemRequestMapper.mapToItemRequestDto(findById(itemRequestId));
+        //return ItemRequestMapper.mapToItemRequestDto(findById(itemRequestId));
+
+        log.debug("Поиск данных о запросе id = {}", itemRequestId);
+        ItemRequest itemRequest = findById(itemRequestId);
+
+        Collection<Item> items = itemRepository.findByRequestId(itemRequestId);
+
+        return ItemRequestMapper.mapToItemRequestDto(itemRequest, items);
     }
 
     @Override
@@ -94,6 +106,15 @@ public class ItemRequestServiceImpl implements ItemRequestService {
         ItemRequest itemRequest = findById(itemRequestId);
         log.debug("Удаляем данные запроса с ID {}", itemRequest.getId());
         itemRequestRepository.delete(itemRequest);
+    }
+
+    @Override
+    public Collection<ItemRequestDto> findAllOfAnotherRequestors(Long requestorId) {
+        log.debug("Получаем записи о всех запросах для пользователя с ID {}", requestorId);
+        return itemRequestRepository.findByRequestorIdNotOrderByCreatedDesc(requestorId)
+                .stream()
+                .map(ItemRequestMapper::mapToItemRequestDto)
+                .collect(Collectors.toList());
     }
 }
 

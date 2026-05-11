@@ -2,11 +2,15 @@ package ru.practicum.shareit.request.mapper;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
 import ru.practicum.shareit.request.dto.NewItemRequestDto;
+import ru.practicum.shareit.request.dto.ResponseDto;
 import ru.practicum.shareit.request.dto.UpdateItemRequestDto;
 import ru.practicum.shareit.request.model.ItemRequest;
 import ru.practicum.shareit.user.model.User;
+
+import java.util.Collection;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ItemRequestMapper {
@@ -32,5 +36,25 @@ public final class ItemRequestMapper {
         itemRequest.setDescription(updateItemRequest.getDescription());
         return itemRequest;
     }
+    private static ResponseDto mapToResponseDto(Item item) {
+        ResponseDto dto = new ResponseDto();
+        dto.setId(item.getId());
+        dto.setName(item.getName());
+        dto.setOwnerId(item.getOwnerUser().getId());
+
+        return dto;
+    }
+
+    public static ItemRequestDto mapToItemRequestDto(ItemRequest itemRequest, Collection<Item> items) {
+        ItemRequestDto dto = new ItemRequestDto();
+        dto.setId(itemRequest.getId());
+        dto.setDescription(itemRequest.getDescription());
+        dto.setRequestorId(itemRequest.getRequestor().getId());
+        dto.setCreated(itemRequest.getCreated());
+        dto.setItems(items.stream().map(ItemRequestMapper::mapToResponseDto).toList());
+
+        return dto;
+    }
+
 }
 

@@ -25,8 +25,11 @@ public class ItemMapper {
         itemDto.setDescription(item.getDescription());
         itemDto.setAvailable(item.getAvailable());
         itemDto.setOwner(item.getOwnerUser().getId());
-        if (item.getItemRequest() != null) {
+        /*if (item.getItemRequest() != null) {
             itemDto.setRequest(item.getItemRequest().getId());
+        }*/
+        if (item.getRequestId() != null) {
+            itemDto.setRequest(item.getRequestId());
         }
         return itemDto;
     }
@@ -43,6 +46,7 @@ public class ItemMapper {
         }
         item.setItemRequest(newItem.getRequest());*/
         item.setOwnerUser(ownerUser);
+        item.setRequestId(newItem.getRequest());
         return item;
     }
 
@@ -88,8 +92,8 @@ public class ItemMapper {
         dto.setAvailable(item.getAvailable());
         dto.setOwnerId(item.getOwnerUser().getId());
         dto.setComments(comments.stream().map(CommentMapper::mapToCommentDto).toList());
-        if (item.getItemRequest() != null) {
-            dto.setRequestId(item.getItemRequest().getId());
+        if (item.getRequestId() != null) {
+            dto.setRequestId(item.getRequestId());
         }
 
         return dto;

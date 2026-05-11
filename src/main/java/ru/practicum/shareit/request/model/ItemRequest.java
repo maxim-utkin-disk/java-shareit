@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "requests")
+@EqualsAndHashCode(of = {"id"})
 public class ItemRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,6 +32,6 @@ public class ItemRequest {
     User requestor;
 
     @Column(name = "created")
-    @NotNull(message = "Дата/время создания заявки на бронь не должна быть пустой")
+    //@NotNull(message = "Дата/время создания заявки на бронь не должна быть пустой")
     LocalDateTime created;
 }

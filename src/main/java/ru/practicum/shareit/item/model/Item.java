@@ -36,8 +36,10 @@ public class Item {
     @JoinColumn(name = "owner_id")
     User ownerUser;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    /*@ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
     @JoinColumn(name = "request_id")
-    ItemRequest itemRequest;
+    ItemRequest itemRequest;*/
+    @JoinColumn(name = "request_id")
+    Long requestId;
 }
