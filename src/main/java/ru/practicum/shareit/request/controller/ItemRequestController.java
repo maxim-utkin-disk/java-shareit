@@ -32,6 +32,14 @@ public class ItemRequestController {
         return itemRequestService.findAll();
     }
 */
+
+    @GetMapping
+    public Collection<ItemRequestDto> findAllByRequestorId(@RequestHeader("X-Sharer-User-Id") Long requestorId) {
+        return itemRequestService.findAllByRequestorId(requestorId);
+    }
+
+
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ItemRequestDto create(@RequestHeader("X-Sharer-User-Id") Long userId,

@@ -29,7 +29,7 @@ public class ItemMapper {
             itemDto.setRequest(item.getItemRequest().getId());
         }*/
         if (item.getRequestId() != null) {
-            itemDto.setRequest(item.getRequestId());
+            itemDto.setRequestId(item.getRequestId());
         }
         return itemDto;
     }
@@ -46,7 +46,9 @@ public class ItemMapper {
         }
         item.setItemRequest(newItem.getRequest());*/
         item.setOwnerUser(ownerUser);
-        item.setRequestId(newItem.getRequest());
+        if (newItem.hasRequestId()) {
+            item.setRequestId(newItem.getRequestId());
+        }
         return item;
     }
 
@@ -80,6 +82,9 @@ public class ItemMapper {
         lastBooking.ifPresent(dto::setLastBooking);
         nextBooking.ifPresent(dto::setNextBooking);
         dto.setComments(comments.stream().map(CommentMapper::mapToCommentDto).toList());
+        if (item.getRequestId() != null) {
+            dto.setRequestId(item.getRequestId());
+        }
 
         return dto;
     }

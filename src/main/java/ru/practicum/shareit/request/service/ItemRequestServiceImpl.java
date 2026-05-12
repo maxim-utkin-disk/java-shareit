@@ -14,7 +14,8 @@ import ru.practicum.shareit.request.dto.ItemRequestDto;
 import ru.practicum.shareit.request.mapper.ItemRequestMapper;
 import ru.practicum.shareit.user.repository.UserRepository;
 
-import java.util.Collection;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import ru.practicum.shareit.request.dto.NewItemRequestDto;
@@ -22,6 +23,9 @@ import ru.practicum.shareit.request.dto.UpdateItemRequestDto;
 import ru.practicum.shareit.request.model.ItemRequest;
 import ru.practicum.shareit.request.repository.ItemRequestRepository;
 import ru.practicum.shareit.user.model.User;
+
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.toList;
 
 @Slf4j
 @Service
@@ -56,7 +60,7 @@ public class ItemRequestServiceImpl implements ItemRequestService {
 
         User findUser = findUserById(userId);
 
-        ItemRequest itemRequest = ItemRequestMapper.mapToItemRequest(newItemRequestDto, findUser);
+        ItemRequest itemRequest = ItemRequestMapper.mapToItemRequest(newItemRequestDto, findUser, LocalDateTime.now());
         itemRequest = itemRequestRepository.save(itemRequest);
 
         return ItemRequestMapper.mapToItemRequestDto(itemRequest);
@@ -94,7 +98,7 @@ public class ItemRequestServiceImpl implements ItemRequestService {
             throw new ValidationException("ID запроса должен быть указан");
         }
 
-        ItemRequest updatedItem = ItemRequestMapper.updateItemFields(findById(requestId), updateItemRequestDto, findUser);
+        ItemRequest updatedItem = ItemRequestMapper.updateItemFields(findById(requestId), updateItemRequestDto/*, findUser*/);
         updatedItem = itemRequestRepository.save(updatedItem);
 
         return ItemRequestMapper.mapToItemRequestDto(updatedItem);
@@ -116,5 +120,44 @@ public class ItemRequestServiceImpl implements ItemRequestService {
                 .map(ItemRequestMapper::mapToItemRequestDto)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public Collection<ItemRequestDto> findAllByRequestorId(Long requestorId) {
+        log.debug("Получаем записи о всех запросах пользователя с ID {}", requestorId);
+
+        User findUser = findUserById(requestorId);
+
+        List<ItemRequest> requests = itemRequestRepository.findByRequestorId(requestorId);
+
+        return fillRequestsData(requests)
+                .stream()
+                .sorted(Comparator.comparing(ItemRequestDto::getCreated).reversed())
+                .collect(Collectors.toList());
+    }
+
+    private List<ItemRequestDto> fillRequestsData(List<ItemRequest> requests) {
+
+        List<Long> requestIds = requests.stream()
+                .map(ItemRequest::getId)
+                .toList();
+
+        Map<Long, List<Item>> requestItems = itemRepository
+                .findByRequestIdIn(requestIds)
+                .stream()
+                .collect(groupingBy(Item::getRequestId, toList()));
+
+        List<ItemRequestDto> requestsList = new ArrayList<>();
+        for (ItemRequest request : requests) {
+
+            requestsList.add(ItemRequestMapper.mapToItemRequestDto(request,
+                    requestItems.getOrDefault(request.getId(), Collections.emptyList()))
+            );
+        }
+
+        return requestsList;
+    }
+
+
+
 }
 

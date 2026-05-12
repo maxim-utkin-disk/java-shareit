@@ -25,5 +25,9 @@ public class CreateNewItemDto {
 
     Long owner;
 
-    Long request;
+    Long requestId;
+
+    public boolean hasRequestId() {
+        return requestId != null;
+    }
 }

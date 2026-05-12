@@ -18,5 +18,7 @@ public interface ItemRequestService {
 
     Collection<ItemRequestDto> findAllOfAnotherRequestors(Long requestorId);
 
+    Collection<ItemRequestDto> findAllByRequestorId(Long requestorId);
+
 }
 

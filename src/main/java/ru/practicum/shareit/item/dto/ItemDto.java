@@ -19,5 +19,5 @@ public class ItemDto {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     Long owner;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    Long request;
+    Long requestId;
 }

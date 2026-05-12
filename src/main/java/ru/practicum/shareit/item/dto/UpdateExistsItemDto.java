@@ -15,7 +15,7 @@ public class UpdateExistsItemDto {
     String description;
     Boolean available;
     Long owner;
-    Long request;
+    Long requestId;
 
     public boolean hasName() {
         return !StringUtils.isBlank(this.name);
