@@ -10,8 +10,6 @@ import org.springframework.web.util.DefaultUriBuilderFactory;
 import ru.practicum.shareit.booking.dto.NewBookingDto;
 import ru.practicum.shareit.client.BaseClient;
 
-import java.util.Map;
-
 @Service
 public class BookingClient extends BaseClient {
 
