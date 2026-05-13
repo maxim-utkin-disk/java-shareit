@@ -45,15 +45,13 @@ class ItemRequestDtoJsonTest {
 
     @Test
     void deserialize_shouldMapCorrectly() throws Exception {
-        String content = """
-                {
-                  "id": 1,
-                  "description": "Нужна дрель",
-                  "requestorId": 2,
-                  "created": "2024-01-15T10:30:00",
-                  "items": [{"id": 10, "name": "Дрель", "ownerId": 3}]
-                }
-                """;
+        String content = "{"
+                + "\"id\": 1,"
+                + "\"description\": \"Нужна дрель\","
+                + "\"requestorId\": 2,"
+                + "\"created\": \"2024-01-15T10:30:00\","
+                + "\"items\": [{\"id\": 10, \"name\": \"Дрель\", \"ownerId\": 3}]"
+                + "}";
 
         ItemRequestDto dto = json.parseObject(content);
 
