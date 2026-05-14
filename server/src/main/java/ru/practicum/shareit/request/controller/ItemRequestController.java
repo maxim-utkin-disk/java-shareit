@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.request.dto.ItemRequestDto;
 import ru.practicum.shareit.request.dto.NewItemRequestDto;
 import ru.practicum.shareit.request.dto.UpdateItemRequestDto;
-import ru.practicum.shareit.request.service.ItemRequestServiceImpl;
+import ru.practicum.shareit.request.service.ItemRequestService;
 
 import java.util.Collection;
 
@@ -14,7 +14,7 @@ import java.util.Collection;
 @RestController
 @RequestMapping(path = "/requests")
 public class ItemRequestController {
-    private final ItemRequestServiceImpl itemRequestService;
+    private final ItemRequestService itemRequestService;
     private final String id = "/{request-id}";
 
     @GetMapping(id)
