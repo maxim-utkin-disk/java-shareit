@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.booking.dto.BookingDto;
-import ru.practicum.shareit.booking.service.BookingServiceImpl;
+import ru.practicum.shareit.booking.service.BookingService;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.booking.dto.NewBookingDto;
 import ru.practicum.shareit.booking.dto.UpdateBookingDto;
@@ -16,7 +16,7 @@ import java.util.Collection;
 @RequestMapping(path = "/bookings")
 @RequiredArgsConstructor
 public class BookingController {
-    private final BookingServiceImpl bookingService;
+    private final BookingService bookingService;
     private final String id = "/{booking-id}";
     private final String owner = "/owner";
 

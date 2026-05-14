@@ -12,6 +12,8 @@ import lombok.experimental.FieldDefaults;
 @Entity
 @Table(name = "users")
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
 
     @Id

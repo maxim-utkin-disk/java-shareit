@@ -42,7 +42,7 @@ class ItemRequestRepositoryTest {
     }
 
     @Test
-    void findByRequestorIdOrderByCreatedDesc_shouldReturnSortedOwnRequests() {
+    void findByRequestorIdOrderByCreatedDesc_shouldReturnSortedOthersRequests() {
         saveRequest(userId1, "Первый", LocalDateTime.now().minusDays(2));
         saveRequest(userId1, "Второй", LocalDateTime.now().minusDays(1));
         saveRequest(userId2, "Чужой", LocalDateTime.now());
@@ -50,9 +50,8 @@ class ItemRequestRepositoryTest {
         List<ItemRequest> result =
                 itemRequestRepository.findByRequestorIdNotOrderByCreatedDesc(userId1).stream().toList();
 
-        assertThat(result).hasSize(2);
-        assertThat(result.get(0).getDescription()).isEqualTo("Второй");
-        assertThat(result.get(1).getDescription()).isEqualTo("Первый");
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getDescription()).isEqualTo("Чужой");
     }
 
     @Test
