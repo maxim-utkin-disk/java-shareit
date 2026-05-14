@@ -7,8 +7,6 @@ import ru.practicum.shareit.user.dto.UserDto;
 import ru.practicum.shareit.user.mapper.UserMapper;
 import ru.practicum.shareit.user.model.User;
 
-import java.time.LocalDate;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -21,7 +19,7 @@ public class UserMapperTest {
     private final UpdateExistsUserDto emptyUpdUser = new UpdateExistsUserDto(100500L, "", "");
 
     @Test
-    public void TestMapToUserDto() {
+    public void testMapToUserDto() {
         UserDto userDto = UserMapper.mapToUserDto(user);
         assertThat(userDto, equalTo(userDto));
     }
