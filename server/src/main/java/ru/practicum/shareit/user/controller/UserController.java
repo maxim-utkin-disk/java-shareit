@@ -1,6 +1,7 @@
 package ru.practicum.shareit.user.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.user.dto.CreateNewUserDto;
 import ru.practicum.shareit.user.dto.UpdateExistsUserDto;
@@ -17,6 +18,7 @@ public class UserController {
     private final String idParamPath = "/{id}";
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public UserDto create(@RequestBody CreateNewUserDto newUser) {
         return userService.createNewUser(newUser);
     }
