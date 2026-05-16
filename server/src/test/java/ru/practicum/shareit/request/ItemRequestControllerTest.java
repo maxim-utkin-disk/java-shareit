@@ -103,16 +103,4 @@ class ItemRequestControllerTest {
                         .header("X-Sharer-User-Id", 1L))
                 .andExpect(status().isNotFound());
     }
-
-    /*@Test
-    void create_shouldReturn400_whenDescriptionBlank() throws Exception {
-        NewItemRequestDto newDto = new NewItemRequestDto();
-        newDto.setDescription("  "); // blank
-
-        mockMvc.perform(post("/requests")
-                        .header("X-Sharer-User-Id", 1L)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(newDto)))
-                .andExpect(status().isBadRequest());
-    }*/
 }
