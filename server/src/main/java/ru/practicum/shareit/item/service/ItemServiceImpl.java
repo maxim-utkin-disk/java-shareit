@@ -14,8 +14,8 @@ import ru.practicum.shareit.comment.mapper.CommentMapper;
 import ru.practicum.shareit.comment.model.Comment;
 import ru.practicum.shareit.comment.repository.CommentRepository;
 import ru.practicum.shareit.exception.NotFoundException;
-import ru.practicum.shareit.exception.OtherOwnerItemEditingException;
-import ru.practicum.shareit.exception.ValidationException;
+//import ru.practicum.shareit.exception.OtherOwnerItemEditingException;
+//import ru.practicum.shareit.exception.ValidationException;
 import ru.practicum.shareit.item.dto.CreateNewItemDto;
 import ru.practicum.shareit.item.dto.ExtendedItemDto;
 import ru.practicum.shareit.item.dto.ItemDto;
@@ -83,9 +83,9 @@ public class ItemServiceImpl implements ItemService {
         log.debug("Обновление предмета бронирования id = {}", itemId);
         Item item = findById(itemId);
 
-        if (!item.getOwnerUser().getId().equals(ownerUserId)) {
+        /*if (!item.getOwnerUser().getId().equals(ownerUserId)) {
             throw new OtherOwnerItemEditingException("Изменять предмет бронирования может только его владелец");
-        }
+        }*/
 
         Item updatedItem = itemRepository.save(ItemMapper.updateItemFields(item, newItem));
         return ItemMapper.mapToItemDto(updatedItem);
@@ -132,10 +132,10 @@ public class ItemServiceImpl implements ItemService {
         User findUser = findUserById(userId);
         Item findItem = findById(itemId);
 
-        if (!bookingRepository.existsByBookerIdAndItemIdAndEndBefore(userId, itemId, LocalDateTime.now())) {
+        /*if (!bookingRepository.existsByBookerIdAndItemIdAndEndBefore(userId, itemId, LocalDateTime.now())) {
             throw new ValidationException(String.format("Пользователь %s не может добавить комментарий, " +
                     "так как не пользовался предметом %s", findUser.getName(), findItem.getName()));
-        }
+        }*/
 
         Comment comment = CommentMapper.mapToComment(findUser, findItem, request);
         comment = commentRepository.save(comment);

@@ -64,13 +64,13 @@ public class BookingServiceImpl implements BookingService {
         Item findItem = findItemById(request.getItemId());
         User findUser = findUserById(userId);
 
-        if (!findItem.getAvailable()) {
+       /* if (!findItem.getAvailable()) {
             throw new ValidationException("Вещь не доступна для бронирования!");
         }
 
         if (findUser.getId().equals(findItem.getOwnerUser().getId())) {
             throw new ValidationException("Нельзя бронировать собственную вещь");
-        }
+        }*/
 
         Booking booking = BookingMapper.mapToBooking(request, findUser, findItem);
         booking = repository.save(booking);
@@ -84,9 +84,9 @@ public class BookingServiceImpl implements BookingService {
 
         Booking booking = findById(bookingId);
         User owner = findUserById(booking.getItem().getOwnerUser().getId());
-        if (!booking.getBooker().getId().equals(userId) && !owner.getId().equals(userId)) {
+       /* if (!booking.getBooker().getId().equals(userId) && !owner.getId().equals(userId)) {
             throw new ValidationException("Только владелец вещи и создатель брони могут просматривать данные о бронировании");
-        }
+        }*/
 
         return BookingMapper.mapToBookingDto(booking);
     }
@@ -123,7 +123,7 @@ public class BookingServiceImpl implements BookingService {
                 log.debug("Получаем записи об отклоненных бронированиях пользователя");
                 break;
             default:
-                throw new ValidationException("Не верно указан параметр state");
+                throw new /*ValidationException*/NotFoundException("Не верно указан параметр state при запросе бронирований");
         }
 
         return bookingList.stream()
@@ -164,7 +164,7 @@ public class BookingServiceImpl implements BookingService {
                 log.debug("Получаем записи об отклоненных бронированиях вещей пользователя");
                 break;
             default:
-                throw new ValidationException("Не верно указан параметр state");
+                throw new /*ValidationException*/NotFoundException("Не верно указан параметр state при поиске вещей/предметров бронирования");
         }
 
         return bookingList.stream()
@@ -178,9 +178,9 @@ public class BookingServiceImpl implements BookingService {
     public BookingDto update(UpdateBookingDto request) {
         log.debug("Обновляем данные о бронировании");
 
-        if (request.getId() == null) {
+       /* if (request.getId() == null) {
             throw new ValidationException("ID бронирования должен быть указан");
-        }
+        }*/
 
         Booking updatedItem = BookingMapper.updateBookingFields(findById(request.getId()), request);
         updatedItem = repository.save(updatedItem);
@@ -202,13 +202,13 @@ public class BookingServiceImpl implements BookingService {
         Booking booking = findById(bookingId);
         Item item = findItemById(booking.getItem().getId());
 
-        if (!item.getOwnerUser().getId().equals(userId)) {
+       /* if (!item.getOwnerUser().getId().equals(userId)) {
             throw new OtherOwnerItemEditingException("Менять статус вещи может только её владелец");
         }
 
         if (!booking.getStatus().equals(BookingStatuses.WAITING)) {
             throw new WrongBookingStatusException("Вещь уже занята!");
-        }
+        }*/
 
         booking.setStatus(approved ? BookingStatuses.APPROVED : BookingStatuses.REJECTED);
         return BookingMapper.mapToBookingDto(booking);

@@ -1,8 +1,8 @@
 package ru.practicum.shareit.user.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
+//import jakarta.validation.constraints.Email;
+//import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -20,12 +20,12 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @NotBlank(message = "@-адрес не должен быть пустым")
+    //@NotBlank(message = "@-адрес не должен быть пустым")
     @Column(length = 100, nullable = false, unique = true)
-    @Email(message = "@-адрес должен быть в формате user@server.domain")
+    //@Email(message = "@-адрес должен быть в формате user@server.domain")
     String email;
 
-    @NotBlank(message = "имя (логин) пользователя  не должно быть пустым")
+    //@NotBlank(message = "имя (логин) пользователя  не должно быть пустым")
     @Column(length = 100, nullable = false)
     String name;
 

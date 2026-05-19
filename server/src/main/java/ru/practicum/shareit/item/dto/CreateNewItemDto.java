@@ -1,7 +1,7 @@
 package ru.practicum.shareit.item.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+//import jakarta.validation.constraints.NotBlank;
+//import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -14,13 +14,13 @@ public class CreateNewItemDto {
 
     Long id;
 
-    @NotBlank(message = "Наименование предмета бронирования не должно быть пустым")
+    //@NotBlank(message = "Наименование предмета бронирования не должно быть пустым")
     String name;
 
-    @NotBlank(message = "Описание предмета бронирования не должно быть пустым")
+    //@NotBlank(message = "Описание предмета бронирования не должно быть пустым")
     String description;
 
-    @NotNull(message = "Нужно указать состояние предмета бронирования: он доступен или занят?")
+    //@NotNull(message = "Нужно указать состояние предмета бронирования: он доступен или занят?")
     Boolean available;
 
     Long owner;
