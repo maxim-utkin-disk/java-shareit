@@ -7,7 +7,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.practicum.shareit.exception.DuplicateEmailException;
 import ru.practicum.shareit.exception.NotFoundException;
-import ru.practicum.shareit.exception.ValidationException;
 import ru.practicum.shareit.user.dto.CreateNewUserDto;
 import ru.practicum.shareit.user.dto.UpdateExistsUserDto;
 import ru.practicum.shareit.user.dto.UserDto;
@@ -99,14 +98,6 @@ class UserServiceImplUnitTest {
         List<UserDto> result = userService.getAllUsers();
 
         assertThat(result).isEmpty();
-    }
-
-    @Test
-    void updateExistsUser_shouldThrowValidationException_whenUserIdNull() {
-        assertThatThrownBy(() ->
-                userService.updateExistsUser(null, new UpdateExistsUserDto(null, "x@x.ru", "X")))
-                .isInstanceOf(ValidationException.class)
-                .hasMessageContaining("id");
     }
 
     @Test

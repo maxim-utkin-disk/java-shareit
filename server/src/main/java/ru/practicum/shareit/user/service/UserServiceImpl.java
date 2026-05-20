@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.exception.DuplicateEmailException;
 import ru.practicum.shareit.exception.NotFoundException;
-//import ru.practicum.shareit.exception.ValidationException;
 import ru.practicum.shareit.user.dto.CreateNewUserDto;
 import ru.practicum.shareit.user.dto.UpdateExistsUserDto;
 import ru.practicum.shareit.user.dto.UserDto;
@@ -45,10 +44,6 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserDto updateExistsUser(Long userId, UpdateExistsUserDto newUser) {
         log.debug("Обновление пользователя");
-
-        /*if (userId == null) {
-            throw new ValidationException("Не указан id пользователя");
-        }*/
 
         Optional<User> findUser = repository.findByEmail(newUser.getEmail());
         if (findUser.isPresent()) {

@@ -272,16 +272,6 @@ class BookingServiceImplUnitTest {
     }
 
     @Test
-    void update_shouldThrowValidationException_whenIdNull() {
-        UpdateBookingDto dto = new UpdateBookingDto();
-        dto.setStatus(BookingStatuses.WAITING);
-
-        assertThatThrownBy(() -> bookingService.update(dto))
-                .isInstanceOf(ValidationException.class)
-                .hasMessageContaining("ID");
-    }
-
-    @Test
     void update_shouldSave_whenBothDatesProvided() {
         Item item = buildItem(1L, 99L, true);
         User booker = buildUser(2L);

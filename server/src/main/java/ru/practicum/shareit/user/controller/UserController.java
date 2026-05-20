@@ -25,7 +25,7 @@ public class UserController {
 
     @PatchMapping(idParamPath)
     public UserDto update(@PathVariable("id") Long userId,
-                          @RequestBody UpdateExistsUserDto newUser) {
+                          /*@Valid*/ @RequestBody UpdateExistsUserDto newUser) {
         return userService.updateExistsUser(userId, newUser);
     }
 

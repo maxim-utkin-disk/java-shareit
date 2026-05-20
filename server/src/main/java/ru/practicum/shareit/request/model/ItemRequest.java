@@ -1,8 +1,8 @@
 package ru.practicum.shareit.request.model;
 
 import jakarta.persistence.*;
-//import jakarta.validation.constraints.NotBlank;
-//import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import ru.practicum.shareit.user.model.User;
@@ -22,13 +22,13 @@ public class ItemRequest {
     Long id;
 
     @Column(name = "description", nullable = false)
-    //@NotBlank(message = "Текст запроса предмета бронирования не должен быть пустым")
+    @NotBlank(message = "Текст запроса предмета бронирования не должен быть пустым")
     String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
     @JoinColumn(name = "requestor_id")
-    //@NotNull(message = "Нужно указать пользователя, оставившего заявку на бронь")
+    @NotNull(message = "Нужно указать пользователя, оставившего заявку на бронь")
     User requestor;
 
     @Column(name = "created")
